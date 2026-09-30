@@ -1,4 +1,4 @@
-# KV Store
+# MINI REDIS CLONE
 
 A Redis-like key-value store built from scratch in C++. This project implements a TCP server, a command parser, LRU eviction, and disk persistence — all without using any external libraries.
 
