@@ -10,3 +10,5 @@ while True:
     response = s.recv(1024).decode()
     print(response.strip())
     s.close()
+
+    # Remove-Item kv.aof -ErrorAction SilentlyContinue

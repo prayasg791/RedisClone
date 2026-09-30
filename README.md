@@ -290,3 +290,33 @@ If the server crashes mid-write, the AOF file could be left in a corrupt state. 
 - **Build system:** CMake
 - **Platform:** Windows (Winsock2)
 - **Benchmarking:** Python 3
+
+
+/**
+1) .\kvserver.exe   lt 
+2)   python -c "import socket; s=socket.socket(); s.connect(('localhost',6380)); s.send(b'set name Prayas\r\n'); print('Response:', s.recv(1024).decode().strip()); s.close()"    rt 
+3) python -c "import socket; s=socket.socket(); s.connect(('localhost',6380)); s.send(b'get name\r\n'); print('Response:', s.recv(1024).decode().strip()); s.close()"
+4) 
+dlt
+python -c "import socket; s=socket.socket(); s.connect(('localhost',6380)); s.send(b'delete name\r\n'); print('Response:', s.recv(1024).decode().strip()); s.close()"
+
+python -c "import socket; s=socket.socket(); s.connect(('localhost',6380)); s.send(b'get name\r\n'); print('Response:', s.recv(1024).decode().strip()); s.close()"
+
+(5) lru eviction
+
+python -c "import socket; send = lambda cmd: (lambda s: (s.connect(('localhost', 6380)), s.send((cmd + '\r\n').encode()), (lambda r: (s.close(), r)[1])(s.recv(1024).decode().strip()))[2])(socket.socket()); [send(f'set k{i} val{i}') for i in range(1, 6)]; print('Capacity full: k1..k5'); send('get k1'); print('Accessed k1'); send('set k6 val6'); print('Added k6'); print('k2 status:', send('get k2')); print('k1 status:', send('get k1'))"
+
+
+6) multithreading and concurrency
+python test_concurrent.py
+
+
+7) crash durability
+ctrl +c
+Get-Content kv.aof
+
+.\kvserver.exe
+
+python -c "import socket; s=socket.socket(); s.connect(('localhost',6380)); s.send(b'get k6\r\n'); print('Recovered k6:', s.recv(1024).decode().strip()); s.close()"
+
+*/

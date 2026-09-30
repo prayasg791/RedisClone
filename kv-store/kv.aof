@@ -1,5 +1,8 @@
-set key3 value3
-set key2 value2
-set key4 value4
-set key0 value0
-set key1 value1
+set name Prayas
+delete name
+set k1 val1
+set k2 val2
+set k3 val3
+set k4 val4
+set k5 val5
+set k6 val6
